@@ -8,8 +8,11 @@ else
 
 endif
 
-server: main.cpp  ./timer/lst_timer.cpp ./http/http_conn.cpp ./log/log.cpp ./CGImysql/sql_connection_pool.cpp  webserver.cpp config.cpp
-	$(CXX) -o server  $^ $(CXXFLAGS) -lpthread -lmysqlclient
+objects=main.o timer/lst_timer.o http/http_conn.o log/log.o CGImysql/sql_connection_pool.o webserver.o config.o
 
+server: $(objects)
+	$(CXX) $(CXXFLAGS) -o server $^ -lpthread -lmysqlclient
+%.o: %.cpp %.h
+	$(CXX) $(CXXFLAGS) -c -o $@ $<
 clean:
 	rm  -r server
