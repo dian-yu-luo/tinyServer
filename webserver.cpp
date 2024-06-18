@@ -405,6 +405,9 @@ void WebServer::eventLoop()
                 util_timer *timer = users_timer[sockfd].timer;
                 deal_timer(timer, sockfd);
             }
+            // TODO 定时器这个东西有点意思,重点是怎么去debug,不知道怎么去搞定bug多线程中的debug ,什么时候应该
+            // 去单步调试,什么时候看log 日志
+
             //处理信号
             else if ((sockfd == m_pipefd[0]) && (events[i].events & EPOLLIN))
             {

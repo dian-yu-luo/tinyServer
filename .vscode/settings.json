@@ -1,0 +1,9 @@
+{
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/home/dianyuluo/code/TinyWebServer",
+            "binaryPath": "/home/dianyuluo/code/TinyWebServer/server",
+            "binaryArgs": []
+        }
+    ]
+}

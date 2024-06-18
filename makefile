@@ -15,4 +15,4 @@ server: $(objects)
 %.o: %.cpp %.h
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 clean:
-	rm  -r server
+	rm  -r server *.o

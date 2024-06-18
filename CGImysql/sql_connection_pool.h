@@ -12,7 +12,7 @@
 #include "../log/log.h"
 
 using namespace std;
-
+// 研究一下后端的线程池在干啥
 class connection_pool
 {
 public:
@@ -45,7 +45,7 @@ public:
 	string m_DatabaseName; //使用数据库名
 	int m_close_log;	//日志开关
 };
-
+// 给connection_pool搞了一层封装
 class connectionRAII{
 
 public:

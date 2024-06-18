@@ -4,7 +4,9 @@
 #include <exception>
 #include <pthread.h>
 #include <semaphore.h>
-
+// 我决定这个锁还是很有用的,在很多地方用到了
+// 这里做的是一个包装,我看不懂,而且我也不想看懂,到时候可以直接抄过来,
+// 我不想做一个开发者了,我就像做一个抄袭者
 class sem
 {
 public:

@@ -12,6 +12,7 @@ int main(int argc, char *argv[])
     config.parse_arg(argc, argv);
 
     WebServer server;
+    // 实例化一个server,在服务端完成的任务
 
     //初始化
     server.init(config.PORT, user, passwd, databasename, config.LOGWrite, 

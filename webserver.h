@@ -53,7 +53,7 @@ public:
 
     int m_pipefd[2];
     int m_epollfd;
-    http_conn *users;
+    http_conn *users; // 连接是个指针?
 
     //数据库相关
     connection_pool *m_connPool;
@@ -63,7 +63,7 @@ public:
     int m_sql_num;
 
     //线程池相关
-    threadpool<http_conn> *m_pool;
+    threadpool<http_conn> *m_pool; // 写了线程池,线程的实例化直接靠着conn 实现
     int m_thread_num;
 
     //epoll_event相关
