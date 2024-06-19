@@ -56,7 +56,7 @@ public:
     http_conn *users; // 连接是个指针?
 
     //数据库相关
-    connection_pool *m_connPool;
+    connection_pool *m_connPool; // 这玩意早就定义好了
     string m_user;         //登陆数据库用户名
     string m_passWord;     //登陆数据库密码
     string m_databaseName; //使用数据库名

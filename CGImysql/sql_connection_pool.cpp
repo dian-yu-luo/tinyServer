@@ -69,7 +69,7 @@ MYSQL *connection_pool::GetConnection()
 
 	reserve.wait();
 	
-	lock.lock();
+	lock.lock(); //TODO 锁的基础用法,在这里不要让别的线程进行操作,我必须搞一个线程编程,怎么在不同的线程上工作 
 
 	con = connList.front();
 	connList.pop_front();
@@ -89,7 +89,7 @@ bool connection_pool::ReleaseConnection(MYSQL *con)
 
 	lock.lock();
 
-	connList.push_back(con);
+	connList.push_back(con); // 说是线程池,其实啥也不是,就是一个list
 	++m_FreeConn;
 	--m_CurConn;
 
