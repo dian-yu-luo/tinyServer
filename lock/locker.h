@@ -11,6 +11,8 @@
 // 信号量
 class sem
 {
+    // 这个信号量的设计就很好,烤炉到了创建失败的情况
+    // 初始的信号值,等待和发消息
 public:
     sem()
     {
@@ -32,6 +34,7 @@ public:
     }
     bool wait()
     {
+        // 这是个阻塞函数,当m_sem > 0 的时候进行当前的活动,然后把m_sem 值减少
         return sem_wait(&m_sem) == 0;
     }
     bool post()

@@ -19,6 +19,7 @@ WebServer::WebServer()
 
 WebServer::~WebServer()
 {
+    // 在析构函数的时候注意完成
     close(m_epollfd);
     close(m_listenfd);
     close(m_pipefd[1]);

@@ -29,7 +29,7 @@ private:
     pthread_t *m_threads;       //描述线程池的数组，其大小为m_thread_number
     std::list<T *> m_workqueue; //请求队列
     locker m_queuelocker;       //保护请求队列的互斥锁
-    sem m_queuestat;            //是否有任务需要处理
+    sem m_queuestat;            //是否有任务需要处理 ;; 线程池里面用到了信号量
     connection_pool *m_connPool;  //数据库
     int m_actor_model;          //模型切换
 };
@@ -78,6 +78,7 @@ bool threadpool<T>::append(T *request, int state)
 template <typename T>
 bool threadpool<T>::append_p(T *request)
 {
+    // proactor模式下的append 操作
     m_queuelocker.lock();
     if (m_workqueue.size() >= m_max_requests)
     {
@@ -101,8 +102,10 @@ void threadpool<T>::run()
 {
     while (true)
     {
+        // 下面两个的顺序不能出问题
         m_queuestat.wait();
         m_queuelocker.lock();
+        // 如果线程里面里面啥事也没有
         if (m_workqueue.empty())
         {
             m_queuelocker.unlock();
