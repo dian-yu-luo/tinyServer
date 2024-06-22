@@ -77,6 +77,7 @@ private:
 };
 class cond
 {
+    // 也是为了实现生产者消费者模型的工具
 public:
     cond()
     {

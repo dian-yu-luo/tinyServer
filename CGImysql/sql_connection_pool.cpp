@@ -66,7 +66,8 @@ MYSQL *connection_pool::GetConnection()
 
 	if (0 == connList.size())
 		return NULL;
-
+// 这个东西和锁是搭配着使用的,这个要记好了
+// 初始值是写好的,8个,wait 表示能用,然后减少一个连接,
 	reserve.wait();
 	
 	lock.lock(); //TODO 锁的基础用法,在这里不要让别的线程进行操作,我必须搞一个线程编程,怎么在不同的线程上工作 
@@ -96,6 +97,7 @@ bool connection_pool::ReleaseConnection(MYSQL *con)
 	lock.unlock();
 
 	reserve.post();
+	// 信号量这个东西是为了实现生产者-消费者模型
 	return true;
 }
 

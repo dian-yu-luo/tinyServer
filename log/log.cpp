@@ -23,6 +23,7 @@ Log::~Log()
 bool Log::init(const char *file_name, int close_log, int log_buf_size, int split_lines, int max_queue_size)
 {
     //如果设置了max_queue_size,则设置为异步
+    // 默认情况下没有设置成异步的
     if (max_queue_size >= 1)
     {
         m_is_async = true;

@@ -16,6 +16,8 @@ using namespace std;
 template <class T>
 class block_queue
 {
+    // 阻塞队列,这个优先级要不先放一下吧,设计这个东西是为了实现什么啊
+    // 这个主要还是在日志里面使用了一下
 public:
     block_queue(int max_size = 1000)
     {
@@ -51,6 +53,8 @@ public:
     //判断队列是否满了
     bool full() 
     {
+        // 先锁上,保证其他线程不会过来修改数据,
+        // 其实感觉已考虑到多线程,好多地方都要进行锁操作
         m_mutex.lock();
         if (m_size >= m_max_size)
         {
@@ -126,12 +130,14 @@ public:
     //若当前没有线程等待条件变量,则唤醒无意义
     bool push(const T &item)
     {
+// 我的笔记尽量写在函数里面吧
 
+// 资源唯一了,这个时候谁也别进来
         m_mutex.lock();
         if (m_size >= m_max_size)
         {
 
-            m_cond.broadcast();
+            m_cond.broadcast(); // 发信号,告诉其他的已经可以了,别等着了,可以去干了
             m_mutex.unlock();
             return false;
         }

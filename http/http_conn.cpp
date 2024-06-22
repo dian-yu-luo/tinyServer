@@ -433,6 +433,7 @@ http_conn::HTTP_CODE http_conn::do_request()
 
             if (users.find(name) == users.end())
             {
+                // 锁这个东西在http 连接上用的很少,就是保证在读取的时候,没有人抢占自己
                 m_lock.lock();
                 int res = mysql_query(mysql, sql_insert);
                 users.insert(pair<string, string>(name, password));
