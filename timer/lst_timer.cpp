@@ -95,13 +95,14 @@ void sort_timer_lst::del_timer(util_timer *timer)
 }
 void sort_timer_lst::tick()
 {
+    // 如果时钟上面没有事件了,直接结束这点
     if (!head)
     {
         return;
     }
     
     time_t cur = time(NULL);
-    util_timer *tmp = head;
+    util_timer *tmp = head; // 待会tmp 差在头上面
     while (tmp)
     {
         if (cur < tmp->expire)
@@ -190,12 +191,12 @@ void Utils::sig_handler(int sig)
 void Utils::addsig(int sig, void(handler)(int), bool restart)
 {
     struct sigaction sa;
-    memset(&sa, '\0', sizeof(sa));
+    memset(&sa, '\0', sizeof(sa)); // 常见的操作,需要进行置零
     sa.sa_handler = handler;
     if (restart)
         sa.sa_flags |= SA_RESTART;
     sigfillset(&sa.sa_mask);
-    assert(sigaction(sig, &sa, NULL) != -1);
+    assert(sigaction(sig, &sa, NULL) != -1); // alert的作用用于中断,知道对应的位置用的
 }
 
 //定时处理任务，重新定时以不断触发SIGALRM信号

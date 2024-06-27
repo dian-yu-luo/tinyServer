@@ -104,6 +104,9 @@ void WebServer::thread_pool()
 void WebServer::eventListen()
 {
     //网络编程基础步骤
+    // 写一下注意,重新复习
+    // 在服务端要进行的内容
+    // 生成socket 文件描述符
     m_listenfd = socket(PF_INET, SOCK_STREAM, 0);
     assert(m_listenfd >= 0);
 
@@ -120,6 +123,7 @@ void WebServer::eventListen()
     }
 
     int ret = 0;
+    // 设置地址出来,然后把地址邦迪一下
     struct sockaddr_in address;
     bzero(&address, sizeof(address));
     address.sin_family = AF_INET;
@@ -128,8 +132,10 @@ void WebServer::eventListen()
 
     int flag = 1;
     setsockopt(m_listenfd, SOL_SOCKET, SO_REUSEADDR, &flag, sizeof(flag));
+    // 绑定监听文件描述符,和地址
     ret = bind(m_listenfd, (struct sockaddr *)&address, sizeof(address));
     assert(ret >= 0);
+    // 就是给内核一个信息,指定队列长度
     ret = listen(m_listenfd, 5);
     assert(ret >= 0);
 

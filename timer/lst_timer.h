@@ -35,6 +35,7 @@ struct client_data
 
 class util_timer
 {
+    // 这就是个节点,一串上面的一个
 public:
     util_timer() : prev(NULL), next(NULL) {}
 
@@ -49,6 +50,7 @@ public:
 
 class sort_timer_lst
 {
+    // 这个东西的设计,用来处理用户的,一系列的时钟事件
 public:
     sort_timer_lst();
     ~sort_timer_lst();
@@ -67,6 +69,9 @@ private:
 
 class Utils
 {
+
+    // 工具,定时器的作用
+    // 里面直接包含了一种自定义是数据结构,这个结构保存了一个链表来进行一系列事件状态的保存
 public:
     Utils() {}
     ~Utils() {}
