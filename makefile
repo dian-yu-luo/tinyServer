@@ -15,4 +15,6 @@ server: $(objects)
 %.o: %.cpp %.h
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
 clean:
-	rm  -r server *.o
+	find . -name "*.o" -type f -delete
+	rm -r server
+

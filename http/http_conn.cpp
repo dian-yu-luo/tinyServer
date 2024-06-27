@@ -700,5 +700,6 @@ void http_conn::process()
     {
         close_conn();
     }
+    // EPOLLOUT 表示这个内存区可以写了,空间被空出来了
     modfd(m_epollfd, m_sockfd, EPOLLOUT, m_TRIGMode);
 }
