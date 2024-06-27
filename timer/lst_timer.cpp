@@ -192,7 +192,7 @@ void Utils::addsig(int sig, void(handler)(int), bool restart)
 {
     struct sigaction sa;
     memset(&sa, '\0', sizeof(sa)); // 常见的操作,需要进行置零
-    sa.sa_handler = handler;
+    sa.sa_handler = handler; // 自己处理的回调函数,如果发生了这件信号,进行处理这个函数
     if (restart)
         sa.sa_flags |= SA_RESTART;
     sigfillset(&sa.sa_mask);

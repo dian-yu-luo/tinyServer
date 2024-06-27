@@ -157,7 +157,7 @@ void WebServer::eventListen()
     utils.addsig(SIGPIPE, SIG_IGN);
     utils.addsig(SIGALRM, utils.sig_handler, false);
     utils.addsig(SIGTERM, utils.sig_handler, false);
-
+    // 这里,处理的是过多久发送信息,使得数据能够及时发送出去
     alarm(TIMESLOT);
 
     //工具类,信号和描述符基础操作
