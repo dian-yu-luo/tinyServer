@@ -3,6 +3,35 @@
 #include <mysql/mysql.h>
 #include <fstream>
 
+/* 
+    一: 
+    如果写一个连接类,应该注意的事项
+    1. 查看准备的常量
+    2. 全局变量
+    3. 静态变量
+    4. 临时的非成员函数
+
+    上面的四种基本上就是一个类最基础的配置了     
+
+    二:
+    查看这个类和其他类的引用关系
+    从.h 文件中可以看到,使用到的文件,待会可以一个一个去查阅,优先级更高一点
+
+    三:
+    还有就是http的连接原理需要复习好
+
+    四:
+    如何debug ,使用到的技巧有什么
+
+
+
+
+ */
+/* 
+    当前类在其他类中的组织形式
+
+ */
+
 //定义http响应的一些状态信息
 const char *ok_200_title = "OK";
 const char *error_400_title = "Bad Request";
@@ -153,7 +182,7 @@ void http_conn::init()
     cgi = 0;
     m_state = 0;
     timer_flag = 0;
-    improv = 0;
+    improv = 0; //判断上一个请求是否已处理完毕
 
     memset(m_read_buf, '\0', READ_BUFFER_SIZE);
     memset(m_write_buf, '\0', WRITE_BUFFER_SIZE);
@@ -196,6 +225,10 @@ http_conn::LINE_STATUS http_conn::parse_line()
 
 //循环读取客户数据，直到无数据可读或对方关闭连接
 //非阻塞ET工作模式下，需要一次性将数据读完
+/* 
+TODO et 和lt   虽然我仍旧没有分清楚,但是我只需要知道,是不是一次性的读完了的就可以了
+
+ */
 bool http_conn::read_once()
 {
     if (m_read_idx >= READ_BUFFER_SIZE)

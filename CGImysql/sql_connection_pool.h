@@ -10,7 +10,10 @@
 #include <string>
 #include "../lock/locker.h"
 #include "../log/log.h"
+/* 
+TODO sql 的部分单独成一个部分,可以分开查看
 
+ */
 using namespace std;
 // 研究一下后端的线程池在干啥
 class connection_pool

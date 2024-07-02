@@ -287,7 +287,10 @@ bool WebServer::dealwithsignal(bool &timeout, bool &stop_server)
 void WebServer::dealwithread(int sockfd)
 {
     util_timer *timer = users_timer[sockfd].timer;
-
+/* 
+    reactor和proactor 是两个很重要的地方,但是在整个项目中出现的次数其实并不多
+    并没有有效的影响到整个项目的能力
+ */
     //reactor
     if (1 == m_actormodel)
     {

@@ -8,6 +8,17 @@
 #include "../lock/locker.h"
 #include "../CGImysql/sql_connection_pool.h"
 
+/* 线程池的设计
+现在的笔记比较落后,是在阅读http 部分的代码的时候顺便写的
+线程池的设计成一个模板类,在使用的时候,使用http实例化,
+
+使用模板类,我猜测就是要用到他容器的属性,里面能放点什么
+
+
+ */
+
+
+
 template <typename T>
 class threadpool
 {
