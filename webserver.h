@@ -35,7 +35,7 @@ public:
     void trig_mode();
     void eventListen();
     void eventLoop();
-    void timer(int connfd, struct sockaddr_in client_address);
+    void timer(int connfd, struct sockaddr_in client_address);// 定义timer 函数,初始化时钟触发器的相关问题
     void adjust_timer(util_timer *timer);
     void deal_timer(util_timer *timer, int sockfd);
     bool dealclientdata();

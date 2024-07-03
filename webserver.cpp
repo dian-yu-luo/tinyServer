@@ -143,11 +143,11 @@ void WebServer::eventListen()
 
     //epoll创建内核事件表
     epoll_event events[MAX_EVENT_NUMBER];
-    m_epollfd = epoll_create(5);
+    m_epollfd = epoll_create(5); // 和操作系统沟通,产生第一个内容部分,他的作用是文件描述符的作用,后续和返回值进行沟通
     assert(m_epollfd != -1);
 
     utils.addfd(m_epollfd, m_listenfd, false, m_LISTENTrigmode);
-    http_conn::m_epollfd = m_epollfd;
+    http_conn::m_epollfd = m_epollfd; // static 变量,所有的http 共用一个
 
     ret = socketpair(PF_UNIX, SOCK_STREAM, 0, m_pipefd);
     assert(ret != -1);
@@ -405,6 +405,7 @@ void WebServer::eventLoop()
             //处理新到的客户连接
             if (sockfd == m_listenfd)
             {
+                // TODO 学习数据的传递方式,后面要总结一下
                 bool flag = dealclientdata();
                 if (false == flag)
                     continue;

@@ -90,15 +90,26 @@ int setnonblocking(int fd)
 void addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
 {
     epoll_event event;
-    event.data.fd = fd;
 
+    // TODO 复习一下什么是联合体
+    event.data.fd = fd;
+    // 下面的用于处理触发模式
+    // 默认情况下是lt模式的,
     if (1 == TRIGMode)
         event.events = EPOLLIN | EPOLLET | EPOLLRDHUP;
     else
         event.events = EPOLLIN | EPOLLRDHUP;
-
+    // 只监听一次,要不然后续需要重新放入到注册事件表里面
     if (one_shot)
         event.events |= EPOLLONESHOT;
+        /* epoll_ctl
+        函数的使用,总体的来看,都在哪里用上了
+        epollfd 从epoll_create创建得来,全局就一个
+
+        事件一共就只有三种可能,添加,修改,删除
+        event     这样就和事件表产生联系了s
+         */
+
     epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
     setnonblocking(fd);
 }
@@ -120,7 +131,7 @@ void modfd(int epollfd, int fd, int ev, int TRIGMode)
         event.events = ev | EPOLLET | EPOLLONESHOT | EPOLLRDHUP;
     else
         event.events = ev | EPOLLONESHOT | EPOLLRDHUP;
-
+// TODO 这里修改event属性,改啥呢?
     epoll_ctl(epollfd, EPOLL_CTL_MOD, fd, &event);
 }
 
