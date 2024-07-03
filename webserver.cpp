@@ -386,6 +386,7 @@ void WebServer::dealwithwrite(int sockfd)
 
 void WebServer::eventLoop()
 {
+    // 在事件循环之前就已经准备好了线程池的问题
     bool timeout = false;
     bool stop_server = false;
 

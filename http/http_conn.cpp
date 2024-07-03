@@ -87,6 +87,8 @@ int setnonblocking(int fd)
 }
 
 //将内核事件表注册读事件，ET模式，选择开启EPOLLONESHOT
+// EPOLLONESHOT模式下 该事件能进一步减少可读、可写和异常事件被触发的次数。 
+// 这个添加事件出现在主线程里面
 void addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
 {
     epoll_event event;
@@ -262,6 +264,8 @@ bool http_conn::read_once()
         return true;
     }
     //ET读数据
+    // 为什么et 模式下性能更高一点
+
     else
     {
         while (true)
