@@ -749,5 +749,7 @@ void http_conn::process()
         close_conn();
     }
     // EPOLLOUT 表示这个内存区可以写了,空间被空出来了
+    // 也就是说每次处理完了这些数据之后就要进行一个操作,清空EPOLLONESHOT属性,让下一次能够继续操作这个fd
     modfd(m_epollfd, m_sockfd, EPOLLOUT, m_TRIGMode);
 }
+// TODO 模块化阅读的思想,总结一下,就是我在阅读对应的代码的过程中,我不需要考虑另外的一部分的代码在表示什么

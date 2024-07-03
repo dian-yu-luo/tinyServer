@@ -170,7 +170,7 @@ void Utils::addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
         event.events = EPOLLIN | EPOLLET | EPOLLRDHUP;
     else
         event.events = EPOLLIN | EPOLLRDHUP;
-
+// |= 特殊的运算符这行代码是在不改变 event.events 其他位的情况下，确保添加了 EPOLLONESHOT 标志。
     if (one_shot)
         event.events |= EPOLLONESHOT;
     epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
