@@ -87,8 +87,10 @@ int setnonblocking(int fd)
 }
 
 //将内核事件表注册读事件，ET模式，选择开启EPOLLONESHOT
-// EPOLLONESHOT模式下 该事件能进一步减少可读、可写和异常事件被触发的次数。 
-// 这个添加事件出现在主线程里面
+/*  
+    EPOLLONESHOT模式下 该事件能进一步减少可读、可写和异常事件被触发的次数。 
+    这个添加事件出现在主线程里面
+ */
 void addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
 {
     epoll_event event;
@@ -112,7 +114,7 @@ void addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
         event     这样就和事件表产生联系了s
          */
 
-    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event);
+    epoll_ctl(epollfd, EPOLL_CTL_ADD, fd, &event); // 加到红黑树里面
     setnonblocking(fd);
 }
 
@@ -120,7 +122,7 @@ void addfd(int epollfd, int fd, bool one_shot, int TRIGMode)
 void removefd(int epollfd, int fd)
 {
     epoll_ctl(epollfd, EPOLL_CTL_DEL, fd, 0);
-    close(fd);
+    close(fd); // 关闭文件描述符的时间
 }
 
 //将事件重置为EPOLLONESHOT
@@ -143,6 +145,7 @@ int http_conn::m_epollfd = -1;
 //关闭连接，关闭一个连接，客户总量减一
 void http_conn::close_conn(bool real_close)
 {
+    /* TODO 最后需要有一个统计,相同类型,类似功能的函数需要都写一下子 */
     if (real_close && (m_sockfd != -1))
     {
         printf("close %d\n", m_sockfd);
@@ -271,6 +274,8 @@ bool http_conn::read_once()
         while (true)
         {
             bytes_read = recv(m_sockfd, m_read_buf + m_read_idx, READ_BUFFER_SIZE - m_read_idx, 0);
+            // 调用了非阻塞io 之后,需要有一定的时间点确定什么时候结束,默认情况下,不传送数据过来就没事了
+            // 但是这种如果使用et 模式就需要使用errno 来判断结束的时间点
             if (bytes_read == -1)
             {
                 if (errno == EAGAIN || errno == EWOULDBLOCK)
@@ -436,6 +441,7 @@ http_conn::HTTP_CODE http_conn::process_read()
 
 http_conn::HTTP_CODE http_conn::do_request()
 {
+    /* TODO 详细分析这个函数里面做了点什么 */
     strcpy(m_real_file, doc_root);
     int len = strlen(doc_root);
     //printf("m_url:%s\n", m_url);

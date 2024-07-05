@@ -28,6 +28,10 @@
 
 class http_conn
 {
+
+    // 在这里需要定义的东西
+    // TODO 固定的长度
+    // 
 public:
     static const int FILENAME_LEN = 200;
     static const int READ_BUFFER_SIZE = 2048;
@@ -82,6 +86,7 @@ public:
     {
         return &m_address;
     }
+    /* TODO 函数的类型分离,顺便做了,把流程写一下*/
     void initmysql_result(connection_pool *connPool);
     int timer_flag;
     int improv;

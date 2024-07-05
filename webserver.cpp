@@ -123,7 +123,7 @@ void WebServer::eventListen()
     }
 
     int ret = 0;
-    // 设置地址出来,然后把地址邦迪一下
+    // 设置地址出来,然后把地址绑定一下
     struct sockaddr_in address;
     bzero(&address, sizeof(address));
     address.sin_family = AF_INET;
@@ -142,7 +142,7 @@ void WebServer::eventListen()
     utils.init(TIMESLOT);
 
     //epoll创建内核事件表
-    epoll_event events[MAX_EVENT_NUMBER];
+    epoll_event events[MAX_EVENT_NUMBER]; // ;; 应该是作者的bug
     m_epollfd = epoll_create(5); // 和操作系统沟通,产生第一个内容部分,他的作用是文件描述符的作用,后续和返回值进行沟通
     assert(m_epollfd != -1);
 
@@ -167,6 +167,7 @@ void WebServer::eventListen()
 
 void WebServer::timer(int connfd, struct sockaddr_in client_address)
 {
+    // http的初始化在timer中完成的,他的连接是线程池的一个成员,会在合适的时间析构的 
     users[connfd].init(connfd, client_address, m_root, m_CONNTrigmode, m_close_log, m_user, m_passWord, m_databaseName);
 
     //初始化client_data数据
@@ -414,6 +415,9 @@ void WebServer::eventLoop()
             else if (events[i].events & (EPOLLRDHUP | EPOLLHUP | EPOLLERR))
             {
                 //服务器端关闭连接，移除对应的定时器
+                /* 
+                按位检查,判断是不是异常问题
+                 */
                 util_timer *timer = users_timer[sockfd].timer;
                 deal_timer(timer, sockfd);
             }

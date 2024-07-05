@@ -38,7 +38,7 @@ public:
     void timer(int connfd, struct sockaddr_in client_address);// 定义timer 函数,初始化时钟触发器的相关问题
     void adjust_timer(util_timer *timer);
     void deal_timer(util_timer *timer, int sockfd);
-    bool dealclientdata();
+    bool dealclientdata(); // 处理客户端的数据
     bool dealwithsignal(bool& timeout, bool& stop_server);
     void dealwithread(int sockfd);
     void dealwithwrite(int sockfd);
@@ -51,7 +51,7 @@ public:
     int m_close_log;
     int m_actormodel;
 
-    int m_pipefd[2];
+    int m_pipefd[2]; //TODO 这个变量设定出来什么作用
     int m_epollfd;
     http_conn *users; // 连接是个指针?
 
@@ -77,6 +77,6 @@ public:
 
     //定时器相关
     client_data *users_timer;
-    Utils utils;
+    Utils utils; // TODO 这东西有几个啊?
 };
 #endif
