@@ -398,7 +398,9 @@ http_conn::HTTP_CODE http_conn::process_read()
     LINE_STATUS line_status = LINE_OK;
     HTTP_CODE ret = NO_REQUEST;
     char *text = 0;
-
+/* 
+这里是状态机的核心部分
+ */
     while ((m_check_state == CHECK_STATE_CONTENT && line_status == LINE_OK) || ((line_status = parse_line()) == LINE_OK))
     {
         text = get_line();
