@@ -197,7 +197,7 @@ void WebServer::adjust_timer(util_timer *timer)
 void WebServer::deal_timer(util_timer *timer, int sockfd)
 {
     timer->cb_func(&users_timer[sockfd]);
-    if (timer)
+    if (timer)  // 如果有的时候在去删除timer ,防止出现异常内存访问
     {
         utils.m_timer_lst.del_timer(timer);
     }
@@ -223,6 +223,7 @@ bool WebServer::dealclientdata()
             LOG_ERROR("%s", "Internal server busy");
             return false;
         }
+        /* 每次都会有一个新的连接,在这个连接的情况下设置timer */
         timer(connfd, client_address);
     }
 
@@ -276,6 +277,7 @@ bool WebServer::dealwithsignal(bool &timeout, bool &stop_server)
             }
             case SIGTERM:
             {
+                /* 发出的事终止信号 */
                 stop_server = true;
                 break;
             }

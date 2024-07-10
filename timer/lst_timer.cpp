@@ -39,6 +39,7 @@ void sort_timer_lst::add_timer(util_timer *timer)
 }
 void sort_timer_lst::adjust_timer(util_timer *timer)
 {
+    /* 说明在链表上进行移动 */
     if (!timer)
     {
         return;
@@ -183,6 +184,9 @@ void Utils::sig_handler(int sig)
     //为保证函数的可重入性，保留原来的errno
     int save_errno = errno;
     int msg = sig;
+    /* 一下就发现这个项目的牛逼了,在这个为止发送信号,通知主循环,也就是epoll_wait 
+        从u_pipefd[1]写入u_pipefd[0]读取状态
+     */
     send(u_pipefd[1], (char *)&msg, 1, 0);
     errno = save_errno;
 }
@@ -196,14 +200,14 @@ void Utils::addsig(int sig, void(handler)(int), bool restart)
     if (restart)
         sa.sa_flags |= SA_RESTART;
     sigfillset(&sa.sa_mask);
-    assert(sigaction(sig, &sa, NULL) != -1); // alert的作用用于中断,知道对应的位置用的
+    assert(sigaction(sig, &sa, NULL) != -1); // alert的作用用于中断,知道对应的位置用的;; 如果有sig信号到来,那么就调用sa里面对应的函数
 }
 
 //定时处理任务，重新定时以不断触发SIGALRM信号
 void Utils::timer_handler()
 {
     m_timer_lst.tick();
-    alarm(m_TIMESLOT);
+    alarm(m_TIMESLOT); // 处理完信号还要添加一个alarm,保证一直有alarm
 }
 
 void Utils::show_error(int connfd, const char *info)
@@ -218,6 +222,10 @@ int Utils::u_epollfd = 0;
 class Utils;
 void cb_func(client_data *user_data)
 {
+    /* 声明好的回调函数
+    删除连接,从此以后epoll 的红黑树就不挂着对应的内容了
+    消掉一些内容
+     */
     epoll_ctl(Utils::u_epollfd, EPOLL_CTL_DEL, user_data->sockfd, 0);
     assert(user_data);
     close(user_data->sockfd);

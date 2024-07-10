@@ -41,7 +41,10 @@ public:
 
 public:
     time_t expire;
-    
+    /* 
+    这个函数的设计就很有意思,我也不知道在我的未来事件到了的时候发生什么事件,
+    那我干脆自己定义回调函数,由客户端的代码直接完成回调事件的编写,把逻辑任务留给未来完成
+     */
     void (* cb_func)(client_data *);
     client_data *user_data;
     util_timer *prev;

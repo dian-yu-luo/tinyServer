@@ -598,6 +598,9 @@ bool http_conn::write()
         {
             if (errno == EAGAIN)
             {
+                // 通过修改完成的事件注册,并没有在靠时钟来完成
+                // TODO 统计所有的事件通知的方法,
+                /* TODO 记录一下 怎么协调 总体和细节之间的关系的问题 */
                 modfd(m_epollfd, m_sockfd, EPOLLOUT, m_TRIGMode);
                 return true;
             }
