@@ -27,6 +27,7 @@ public:
         }
 
         m_max_size = max_size;
+        // 所谓的阻塞队列就是一个应用了各种锁的数组
         m_array = new T[max_size];
         m_size = 0;
         m_front = -1;

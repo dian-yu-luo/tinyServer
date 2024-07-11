@@ -14,6 +14,7 @@ class Log
 {
 public:
     //C++11以后,使用局部变量懒汉不用加锁
+    /* 非常常见的一种单例模式的使用方法 */
     static Log *get_instance()
     {
         static Log instance;
