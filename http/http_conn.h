@@ -135,8 +135,8 @@ private:
     long m_content_length;
     bool m_linger;
     char *m_file_address;
-    struct stat m_file_stat;
-    struct iovec m_iv[2];
+    struct stat m_file_stat; // ;;相应部分 文件属性state, 经典的linux 变量名
+    struct iovec m_iv[2]; // 没见过啊这种表示方式
     int m_iv_count;
     int cgi;        //是否启用的POST
     char *m_string; //存储请求头数据

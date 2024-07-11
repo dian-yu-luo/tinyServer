@@ -557,7 +557,7 @@ http_conn::HTTP_CODE http_conn::do_request()
     else
         strncpy(m_real_file + len, m_url, FILENAME_LEN - len - 1);
 
-    if (stat(m_real_file, &m_file_stat) < 0)
+    if (stat(m_real_file, &m_file_stat) < 0) //;; 获得m_real_file的文件属性放到stat 中
         return NO_RESOURCE;
 
     if (!(m_file_stat.st_mode & S_IROTH))
@@ -567,7 +567,7 @@ http_conn::HTTP_CODE http_conn::do_request()
         return BAD_REQUEST;
 
     int fd = open(m_real_file, O_RDONLY);
-    m_file_address = (char *)mmap(0, m_file_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    m_file_address = (char *)mmap(0, m_file_stat.st_size, PROT_READ, MAP_PRIVATE, fd, 0); // ;; 映射属性,把文件的属性放到内存里面
     close(fd);
     return FILE_REQUEST;
 }
@@ -581,6 +581,7 @@ void http_conn::unmap()
 }
 bool http_conn::write()
 {
+    /* 真正进行网络io 还是由主线程完成 */
     int temp = 0;
 
     if (bytes_to_send == 0)

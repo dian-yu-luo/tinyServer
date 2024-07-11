@@ -438,6 +438,7 @@ void WebServer::eventLoop()
             {
                 dealwithread(sockfd);
             }
+            /* 主线程检测到的事件,现在有一部分空间可以写了,交给你了,现在由你来完成写事件 */
             else if (events[i].events & EPOLLOUT)
             {
                 dealwithwrite(sockfd);
